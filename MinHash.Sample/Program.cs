@@ -21,7 +21,7 @@ namespace MinHash.Sample
             var databaseConnection = new DatabaseConnection(connection);
 
 //#if DEBUG
-            args = new[] { "3_COMPUTE_HASH" };
+            args = new[] { "4_COMPUTE_PAIRS_OLD" };
 //#endif
 
             if (args.Length == 1)
@@ -86,29 +86,7 @@ namespace MinHash.Sample
         {
             connection.DeleteAllPairs();
             connection.SetOrdernumber();
-            var minhashes = connection.ReadDatabaseMinhashes();
-
-            // exclude pairs already set
-            var lastIndex = minhashes.Count - 1;
-
-            for (var i = 0; i < lastIndex; i++)
-            {
-                var leftDbHash = minhashes[i];
-                var rightDbHash = minhashes[i + 1];
-
-                var leftHashArray = MinHash.ToUInt64Array(leftDbHash.Minhash);
-                var rightHashArray = MinHash.ToUInt64Array(rightDbHash.Minhash);
-
-                var leftMinHash = new MinHash(leftHashArray);
-                var rightMinHash = new MinHash(rightHashArray);
-
-                var jaccardEstimate = leftMinHash.GetJaccardIndex(rightMinHash);
-
-                if (jaccardEstimate > 0.8)
-                {
-                    connection.InsertPair(leftDbHash.Id, rightDbHash.Id);
-                }
-            }
+            connection.ComputeMinHashPairs();
 
             return 0;
         }
@@ -116,7 +94,7 @@ namespace MinHash.Sample
         private static int ComputePairsOldMain(DatabaseConnection connection)
         {
             connection.DeleteAllPairs();
-            connection.computePairs();
+            connection.ComputeClassicPairs();
 
             return 0;
         }
