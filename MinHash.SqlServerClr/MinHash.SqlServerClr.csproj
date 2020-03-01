@@ -62,6 +62,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>powershell -noprofile -executionpolicy bypass  "$(TargetDir)PatchSqlScript.ps1"</PostBuildEvent>
+    <PostBuildEvent>powershell -noprofile -executionpolicy bypass -File "$(TargetDir)PatchSqlScript.ps1"</PostBuildEvent>
   </PropertyGroup>
 </Project>
