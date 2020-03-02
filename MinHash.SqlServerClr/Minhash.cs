@@ -8,6 +8,16 @@ namespace MinHash.SqlServerClr
         [SqlFunction(IsDeterministic = true)]
         public static double JaccardIndex8(byte[] leftArray, byte[] rightArray)
         {
+            if (leftArray == null || rightArray == null)
+            {
+                return 0.0;
+            }
+
+            if (leftArray.Length == 0 && rightArray.Length == 0)
+            {
+                return 1.0;
+            }
+            
             if (leftArray.Length != rightArray.Length)
             {
                 throw new ArgumentException("Both array must have the same length.", nameof(leftArray));
@@ -31,6 +41,16 @@ namespace MinHash.SqlServerClr
         [SqlFunction(IsDeterministic = true)]
         public static double JaccardIndex64(byte[] leftArray, byte[] rightArray)
         {
+            if (leftArray == null || rightArray == null)
+            {
+                return 0.0;
+            }
+
+            if (leftArray.Length == 0 && rightArray.Length == 0)
+            {
+                return 1.0;
+            }
+
             if (leftArray.Length != rightArray.Length)
             {
                 throw new ArgumentException("Both array must have the same length.", nameof(leftArray));
